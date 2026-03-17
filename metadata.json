@@ -1,0 +1,9 @@
+
+{
+  "name": "TheTravelGuru - Your Journey Begins Here",
+  "description": "A high-conversion tours and travel platform for TheTravelGuru, featuring transparent budget breakdowns, personal consultancy from Mahavir Mahirrao, and intelligent itinerary planning.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

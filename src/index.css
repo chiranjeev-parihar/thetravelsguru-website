@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Poppins', sans-serif;
+  --color-slate-850: #151e2e;
+  --color-brand-orange: #f97316;
+  --color-brand-orangedark: #ea580c;
+  --color-brand-blue: #1e40af;
+  --color-brand-bluedark: #1e3a8a;
+  --animate-float: float 6s ease-in-out infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-blue ring-offset-2;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .glass-dark {
+    @apply bg-slate-900/70 backdrop-blur-lg border border-slate-700/50 shadow-xl;
+  }
+
+  .btn-primary {
+    @apply bg-brand-blue text-white px-8 py-3 rounded-full font-bold hover:bg-brand-bluedark transition-all duration-300 shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-accent {
+    @apply bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orangedark transition-all duration-300 shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+}
