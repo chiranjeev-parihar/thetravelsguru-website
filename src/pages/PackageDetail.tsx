@@ -1,18 +1,33 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-  Users, MapPin, Clock, Calendar, CheckCircle, XCircle, 
+  Users, MapPin, Clock, CheckCircle, XCircle, 
   ChevronDown, Phone, Share2, Heart, Award, ShieldCheck
 } from 'lucide-react';
+
 import { motion } from 'framer-motion';
 import { PACKAGES, DEFAULTS } from '../data';
-import { BudgetBreakdown } from '../components/BudgetBreakdown';
 
 export const PackageDetail = () => {
   const { id } = useParams();
   const pkg = PACKAGES.find(p => p.id === id);
   const [activeDay, setActiveDay] = useState<number | null>(1);
+  const [showBar, setShowBar] = useState(true);
+  const contentEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  useEffect(()=>{
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowBar(!entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    if(contentEndRef.current) observer.observe(contentEndRef.current);
+    return () => observer.disconnect();
+  },[]);
 
   if (!pkg) return (
     <div className="h-screen flex items-center justify-center bg-slate-50">
@@ -65,7 +80,13 @@ export const PackageDetail = () => {
                 <button className="flex-grow btn-primary">
                   Book Now
                 </button>
-                <button className="bg-slate-100 p-3 rounded-2xl hover:bg-slate-200 transition-colors border border-slate-200 flex items-center justify-center">
+                <button
+                  className="bg-slate-100 p-3 rounded-2xl hover:bg-slate-200 transition-colors border border-slate-200 flex items-center justify-center"
+                  onClick={async()=>{
+                    if(navigator.share){await navigator.share({title:pkg.name,url:window.location.href});}
+                    else{navigator.clipboard.writeText(window.location.href);alert('Link copied!');}
+                  }}
+                >
                   <Share2 size={20} className="text-slate-600" />
                 </button>
               </div>
@@ -76,14 +97,10 @@ export const PackageDetail = () => {
 
       {/* 2. Quick Info Bar */}
       <section className="bg-gray-50 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-3 gap-8">
           <div className="text-center md:border-r border-gray-200">
             <div className="text-[10px] font-black text-gray-400 uppercase mb-1">Best Time</div>
             <div className="font-bold text-gray-800">Oct - Mar</div>
-          </div>
-          <div className="text-center md:border-r border-gray-200">
-            <div className="text-[10px] font-black text-gray-400 uppercase mb-1">Difficulty</div>
-            <div className="font-bold text-gray-800">Easy to Moderate</div>
           </div>
           <div className="text-center md:border-r border-gray-200">
             <div className="text-[10px] font-black text-gray-400 uppercase mb-1">Rating</div>
@@ -153,14 +170,8 @@ export const PackageDetail = () => {
             </div>
           </section>
 
-          {/* 5. Budget Breakdown Tool */}
-          <section className="space-y-8">
-             <h2 className="text-4xl font-black text-slate-900 tracking-tight">Complete <span className="text-brand-blue">Transparency</span></h2>
-             <BudgetBreakdown data={pkg.budgetBreakdown} total={pkg.price} />
-          </section>
-
-          {/* 6. Inclusions & Exclusions */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* 5. Inclusions & Exclusions */}
+          <section ref={contentEndRef} className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="space-y-6">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <CheckCircle className="text-green-500" size={24} /> What's Included
@@ -190,7 +201,7 @@ export const PackageDetail = () => {
 
         {/* Sidebar */}
         <aside className="space-y-8">
-          {/* 7. Personal Travel Consultant Section - UPDATED IMAGE */}
+          {/* 7. Personal Travel Consultant Section */}
           <div className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-xl sticky top-28">
             <div className="flex flex-col items-center text-center space-y-4 mb-8">
               <div className="relative">
@@ -247,21 +258,9 @@ export const PackageDetail = () => {
         </aside>
       </div>
 
-      {/* Sticky Mobile Booking Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-slate-100 p-4 z-50 flex items-center justify-between shadow-[0_-10px_40px_rgba(0,0,0,0.1)] animate-in slide-in-from-bottom duration-300">
-        <div>
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Starts from</div>
-          <div className="text-2xl font-black text-brand-blue">₹{pkg.price.toLocaleString()}</div>
-        </div>
-        <div className="flex gap-3">
-          <a href={`tel:${DEFAULTS.PHONE}`} className="bg-brand-blue/10 p-4 rounded-2xl text-brand-blue flex items-center justify-center">
-            <Phone size={22} />
-          </a>
-          <button className="btn-primary px-8">
-            Inquire Now
-          </button>
-        </div>
-      </div>
+
+
     </div>
   );
 };
+

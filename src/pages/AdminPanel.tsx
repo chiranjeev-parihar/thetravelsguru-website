@@ -176,7 +176,7 @@ export const AdminPanel = ({ onLogout }: Props) => {
                         <Compass size={16} className="text-amber-400" />
                     </div>
                     <span className="font-bold text-white text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        TheTravelGuru
+                        The Travel's Guru
                     </span>
                     <span className="text-slate-600 text-xs ml-1">/ Admin</span>
                 </div>

@@ -10,7 +10,7 @@ export const generateItinerary = async (destination: string, duration: string, t
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
-    const prompt = `Act as Mahavir Mahirrao, the senior travel consultant for TheTravelGuru. 
+    const prompt = `Act as Mahavir Mahirrao, the senior travel consultant for The Travel's Guru. 
     Create a detailed, high-quality, and personalized travel itinerary for:
     - Destination: ${destination}
     - Duration: ${duration}
@@ -18,7 +18,7 @@ export const generateItinerary = async (destination: string, duration: string, t
     - Traveler Interests: ${interests.join(', ')}
     
     Structure the response with:
-    1. A warm welcome from TheTravelGuru.
+    1. A warm welcome from The Travel's Guru.
     2. A day-by-day breakdown with specific activity suggestions.
     3. Estimated local budget breakdown (Accommodation, Food, Transport).
     4. Pro-tips for this specific destination.

@@ -181,7 +181,7 @@ export const InquiryForm = () => {
                         <span className="text-white text-lg">✈</span>
                     </div>
                     <div>
-                        <p className="font-black text-slate-800 text-sm leading-none">TheTravelGuru</p>
+                        <p className="font-black text-slate-800 text-sm leading-none">The Travel's Guru</p>
                         <p className="text-[10px] text-slate-400 font-medium mt-0.5">Travel Enquiry Form</p>
                     </div>
                 </div>
@@ -424,7 +424,7 @@ export const InquiryForm = () => {
                             <Phone size={11} /> 9099965751
                         </a>
                     </div>
-                    <p className="text-slate-300 text-[10px]">© TheTravelGuru · Surat, Gujarat</p>
+                    <p className="text-slate-300 text-[10px]">© The Travel's Guru · Surat, Gujarat</p>
                 </div>
             </div>
         </div>

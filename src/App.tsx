@@ -8,6 +8,9 @@ import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { AdminRoute } from './pages/AdminRoute';
 import { InquiryForm } from './pages/InquiryForm';  // ✅ standalone shareable form
+import { PrivacyPolicy, CancellationPolicy, TravelInsurance, TermsOfService } from './pages/PolicyPages';
+import { EmployeePage } from './pages/EmployeePage';
+import { CustomerPage } from './pages/CustomerPage';
 
 const App = () => {
   return (
@@ -21,6 +24,8 @@ const App = () => {
         <Route path="/inquiry" element={<InquiryForm />} />
 
         {/* ── Hidden admin panel — yoursite.com/#/admin ── */}
+        <Route path="/employee" element={<EmployeePage/>}/>
+        <Route path="/customer" element={<CustomerPage/>}/>
         <Route path="/admin" element={<AdminRoute />} />
 
         {/* ── Public website (wrapped in Layout) ── */}
@@ -32,6 +37,10 @@ const App = () => {
               <Route path="/package/:id" element={<PackageDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+              <Route path="/cancellation-policy" element={<CancellationPolicy/>}/>
+              <Route path="/travel-insurance" element={<TravelInsurance/>}/>
+              <Route path="/terms" element={<TermsOfService/>}/>
             </Routes>
           </Layout>
         } />

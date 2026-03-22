@@ -1,5 +1,5 @@
 /**
- * API service for TheTravelGuru backend
+ * API service for The Travel's Guru backend
  * Handles all HTTP requests to backend endpoints
  */
 

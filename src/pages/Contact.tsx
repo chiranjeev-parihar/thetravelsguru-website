@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Phone, Mail, MapPin, Send, MessageCircle,
   Users, Sparkles, Clock, CheckCircle
@@ -27,12 +28,20 @@ const inputCls = "w-full bg-gray-50 border border-gray-200 px-6 py-4 rounded-2xl
 const errorCls = "text-xs text-red-500 font-semibold px-1 mt-0.5";
 
 export const Contact = () => {
-  const [activeTab, setActiveTab] = useState<'general' | 'group' | 'custom' | 'early'>('general');
+  const [searchParams] = useSearchParams();
+  const initialTab = (['general','group','custom','early'].includes(searchParams.get('tab')||'') ? searchParams.get('tab') : 'general') as 'general'|'group'|'custom'|'early';
+  const [activeTab, setActiveTab] = useState<'general'|'group'|'custom'|'early'>(initialTab);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState('');
   const [submittedForms, setSubmittedForms] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(()=>{
+    if(searchParams.get('tab')){
+      setTimeout(()=>document.getElementById('contact-form')?.scrollIntoView({behavior:'smooth'}),150);
+    }
+  },[searchParams]);
 
   // ── Per-form phone state ────────────────────────────────────────────────
   const defaultCountry = COUNTRIES[0]; // India
@@ -69,6 +78,7 @@ export const Contact = () => {
       });
       if (!res.ok) throw new Error();
       setSubmittedForms(prev => ({ ...prev, [formId]: true }));
+      setTimeout(()=>document.getElementById('contact-form')?.scrollIntoView({behavior:'smooth'}),100);
     } catch {
       setError('Something went wrong. Please try WhatsApp or call us directly.');
     } finally {
@@ -230,7 +240,7 @@ export const Contact = () => {
         </aside>
 
         {/* Tabbed Form Interface */}
-        <div className="lg:col-span-2 space-y-6">
+        <div id="contact-form" className="lg:col-span-2 space-y-6">
           <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-100 flex flex-wrap gap-2">
             {[
               { id: 'general', label: 'General Inquiry', icon: Send },

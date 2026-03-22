@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Filter, Search, Grid, List, ChevronDown, CheckCircle, MapPin, X } from 'lucide-react';
+import { Filter, Search, ChevronDown, CheckCircle, MapPin, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PACKAGES } from '../data';
 
@@ -22,14 +22,23 @@ const staggerContainer = {
 
 export const Packages = () => {
   const [filterCategory, setFilterCategory] = useState<string>('All');
-  const [budgetLimit, setBudgetLimit] = useState<number>(500000);
   const [sortOrder, setSortOrder] = useState<string>('popular');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const filteredPackages = PACKAGES.filter(pkg => {
-    const categoryMatch = filterCategory === 'All' || pkg.category === filterCategory;
-    const budgetMatch = pkg.price <= budgetLimit;
-    return categoryMatch && budgetMatch;
+  const filteredPackages = PACKAGES.filter(pkg => filterCategory === 'All' || pkg.category === filterCategory);
+
+  const sortedPackages = [...filteredPackages].sort((a,b)=>{
+    if(sortOrder==='low-to-high') return a.price-b.price;
+    if(sortOrder==='high-to-low') return b.price-a.price;
+    // popular: Goa first, Manali second, Bali third
+    const pop=(p:typeof a)=>{
+      const n=p.destination.toLowerCase();
+      if(n.includes('goa')) return 0;
+      if(n.includes('manali')||n.includes('shimla')) return 1;
+      if(n.includes('bali')) return 2;
+      return 3;
+    };
+    return pop(a)-pop(b);
   });
 
   return (
@@ -76,7 +85,7 @@ export const Packages = () => {
             onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)} 
             className="bg-slate-100 text-brand-blue py-2 px-4 rounded-xl shadow-sm flex items-center gap-2 text-sm font-bold transition-transform active:scale-95"
           >
-            {isMobileFilterOpen ? <><X size={16}/> Hide Filters</> : <><Filter size={16}/> Show Filters</>}
+            {isMobileFilterOpen ? <><X size={16}/>Hide Filters</> : <><Filter size={16}/>Show Filters</>}
           </button>
         </div>
 
@@ -93,7 +102,7 @@ export const Packages = () => {
                   <Filter size={20} className="text-brand-blue" /> Filter Tours
                 </h3>
                 <button 
-                  onClick={() => { setFilterCategory('All'); setBudgetLimit(500000); }}
+                  onClick={() => { setFilterCategory('All'); }}
                   className="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors bg-slate-100 px-3 py-1.5 rounded-full"
                 >
                   Clear
@@ -115,7 +124,7 @@ export const Packages = () => {
                           type="radio" 
                           name="category"
                           checked={filterCategory === cat}
-                          onChange={() => setFilterCategory(cat)}
+                          onChange={() => { setFilterCategory(cat); setIsMobileFilterOpen(false); }}
                           className="hidden" 
                         />
                         <span className={`text-sm font-bold transition-colors ${filterCategory === cat ? 'text-slate-900' : 'text-slate-500 group-hover:text-slate-900'}`}>
@@ -125,44 +134,6 @@ export const Packages = () => {
                     ))}
                   </div>
                 </div>
-
-                <div>
-                  <h4 className="text-[10px] font-black uppercase text-slate-400 mb-5 tracking-widest flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-brand-blue"></span> Max Budget
-                  </h4>
-                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4 text-center text-xl font-black text-brand-blue">
-                    ₹{budgetLimit.toLocaleString()}
-                  </div>
-                  <input 
-                    type="range" 
-                    min="10000" 
-                    max="500000" 
-                    step="5000"
-                    value={budgetLimit}
-                    onChange={(e) => setBudgetLimit(parseInt(e.target.value))}
-                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-orange" 
-                  />
-                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 mt-3">
-                    <span>₹10K</span>
-                    <span>₹5L+</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-brand-orange to-red-500 rounded-3xl p-8 text-white text-center space-y-6 shadow-2xl shadow-brand-orange/20 relative overflow-hidden group"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-              <div className="relative z-10">
-                <h3 className="text-2xl font-black tracking-tight leading-tight">Can't find the perfect fit?</h3>
-                <p className="text-sm text-white/90 font-medium py-2">Let our AI build a custom itinerary just for you.</p>
-                <Link to="/contact" className="block w-full bg-white text-brand-orange py-4 rounded-xl font-black text-sm hover:scale-105 transition-transform shadow-xl">
-                  Get Custom Plan
-                </Link>
               </div>
             </motion.div>
           </aside>
@@ -171,7 +142,7 @@ export const Packages = () => {
           <div className="lg:col-span-3 space-y-8">
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="text-sm font-bold text-gray-500">
-                Showing <span className="text-blue-800">{filteredPackages.length}</span> packages found
+                Showing <span className="text-blue-800">{sortedPackages.length}</span> packages found
               </div>
               <div className="flex items-center gap-4">
                 <div className="relative">
@@ -181,15 +152,10 @@ export const Packages = () => {
                     className="bg-gray-50 border-none text-sm font-bold pl-4 pr-10 py-2 rounded-xl outline-none appearance-none cursor-pointer focus:ring-2 focus:ring-blue-800 transition-all"
                   >
                     <option value="popular">Most Popular</option>
-                    <option value="low">Price: Low to High</option>
-                    <option value="high">Price: High to Low</option>
-                    <option value="duration">Duration</option>
+                    <option value="low-to-high">Price: Low to High</option>
+                    <option value="high-to-low">Price: High to Low</option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" size={16} />
-                </div>
-                <div className="flex items-center bg-gray-50 p-1 rounded-xl">
-                  <button className="p-2 bg-white text-blue-800 rounded-lg shadow-sm"><Grid size={18} /></button>
-                  <button className="p-2 text-gray-400 hover:text-blue-800 transition-colors"><List size={18} /></button>
                 </div>
               </div>
             </div>
@@ -200,7 +166,7 @@ export const Packages = () => {
               animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 gap-8"
             >
-              {filteredPackages.map((pkg) => (
+              {sortedPackages.map((pkg) => (
                 <motion.div 
                   variants={fadeInUp}
                   key={pkg.id} 
@@ -240,21 +206,38 @@ export const Packages = () => {
                           <span className="font-bold text-slate-800">{pkg.rating}</span>
                           <span className="text-slate-400 text-xs">({pkg.reviewsCount})</span>
                        </div>
-                       <Link to={`/package/${pkg.id}`} className="btn-primary py-2.5 px-6">
+                       <Link to={`/package/${pkg.id}`} onClick={()=>window.scrollTo(0,0)} className="btn-primary py-2.5 px-6">
                          View Details
                        </Link>
                     </div>
                   </div>
                 </motion.div>
               ))}
-              {filteredPackages.length === 0 && (
+              {sortedPackages.length === 0 && (
                 <div className="col-span-2 py-20 text-center space-y-4 bg-white rounded-3xl border border-dashed border-slate-200">
                   <div className="text-6xl text-slate-300">🔍</div>
                   <h3 className="text-2xl font-black text-slate-800">No Packages Found</h3>
-                  <p className="text-slate-500 font-medium tracking-wide">Try adjusting your budget limit or category filters.</p>
-                  <button onClick={() => { setFilterCategory('All'); setBudgetLimit(500000); }} className="inline-block btn-primary">Reset Filters</button>
+                  <p className="text-slate-500 font-medium tracking-wide">Try adjusting your category filters.</p>
+                  <button onClick={() => { setFilterCategory('All'); }} className="inline-block btn-primary">Reset Filters</button>
                 </div>
               )}
+            </motion.div>
+
+            {/* Can't find the perfect fit — moved below the grid */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-brand-orange to-red-500 rounded-3xl p-8 text-white text-center space-y-6 shadow-2xl shadow-brand-orange/20 relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <h3 className="text-2xl font-black tracking-tight leading-tight">Can't find the perfect fit?</h3>
+                <p className="text-sm text-white/90 font-medium py-2">Let our AI build a custom itinerary just for you.</p>
+                <Link to="/contact?tab=custom" onClick={()=>window.scrollTo(0,0)} className="block w-full bg-white text-brand-orange py-4 rounded-xl font-black text-sm hover:scale-105 transition-transform shadow-xl">
+                  Get Custom Plan
+                </Link>
+              </div>
             </motion.div>
           </div>
         </div>

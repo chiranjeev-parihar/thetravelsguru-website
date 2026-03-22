@@ -108,10 +108,10 @@ export const Home = () => {
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Link to="/packages" className="btn-accent w-full sm:w-auto text-center">
+            <Link to="/packages" onClick={()=>window.scrollTo(0,0)} className="btn-accent w-full sm:w-auto text-center">
               Explore Packages
             </Link>
-            <Link to="/contact"
+            <Link to="/contact?tab=custom"
               className="glass text-brand-blue px-10 py-4 rounded-full font-bold text-lg transition-all hover:bg-white/90 w-full sm:w-auto text-center whitespace-nowrap">
               Custom Trip Plan
             </Link>
@@ -142,7 +142,7 @@ export const Home = () => {
                 Register for upcoming tours and get locked-in early rates before prices soar.
               </p>
             </div>
-            <Link to="/contact"
+            <Link to="/contact?tab=early"
               className="bg-white text-red-600 px-8 py-4 md:px-10 md:py-5 rounded-full font-black text-lg md:text-xl hover:scale-105 transition-transform shadow-2xl shrink-0 hover:shadow-white/20 w-full md:w-auto text-center mt-6 md:mt-0">
               Claim Discount
             </Link>
@@ -171,7 +171,7 @@ export const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px]">
           {PACKAGES.slice(0, 3).map((pkg, idx) => (
-            <Link to={`/package/${pkg.id}`} key={pkg.id}>
+            <Link to={`/package/${pkg.id}`} key={pkg.id} onClick={()=>window.scrollTo(0,0)}>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -215,58 +215,30 @@ export const Home = () => {
       </section>
 
       {/* ── 4. Social Testimonials ── */}
-      <section className="bg-slate-900 py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-brand-blue/5 mix-blend-multiply"></div>
+      <section className="bg-slate-900 py-16 sm:py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-              Love From Our <span className="text-brand-orange">Travelers</span>
-            </h2>
-            <p className="text-slate-400 text-lg font-medium">
-              Join thousands of happy explorers sharing their memories online.
-            </p>
+          <div className="text-center mb-12 space-y-3">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">Love From Our <span className="text-brand-orange">Travelers</span></h2>
+            <p className="text-slate-400 text-base font-medium">Real stories from real people who travelled with us.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { name: 'Sarah Jenkins', handle: '@sarah_travels', platform: 'Instagram', text: 'Just got back from the most surreal trip to Bali planned by @TheTravelGuru 🌴 The attention to detail was INSANE! Highly recommend for a stress-free vacay! ✨', likes: '1.2k', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-              { name: 'David & Emma', handle: 'David Smith', platform: 'Facebook', text: 'Thank you Mahavir for an unforgettable family trip to Europe! Everything from the hotels to the fast-track museum passes was handled perfectly. Worth every penny! 🌍✈️', likes: '458', img: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-              { name: 'Priya Patel', handle: '@priya_wanderlust', platform: 'Instagram', text: 'If you want a premium luxury experience without the headache of planning, this is the agency. The Maldives overwater villa they booked for us was a dream come true! 🌊💙 @TheTravelGuru', likes: '2.5k', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' }
-            ].map((review, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
-                className="bg-white rounded-3xl p-6 shadow-2xl group hover:-translate-y-2 transition-transform duration-300"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-orange p-0.5 shrink-0">
-                      <img src={review.img} className="w-full h-full rounded-full object-cover" alt={review.name} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-sm">{review.name}</h4>
-                      <p className="text-xs text-slate-500 font-medium">{review.handle}</p>
-                    </div>
+              {name:'Romi Shah & Group',loc:'Alibaug Trip',platform:'Google',text:'We had an absolutely wonderful group trip to Alibaug! Mahavir sir personally handled every detail — from ferry bookings to the beach resort stay. The whole group of 12 was thoroughly impressed. Zero stress, 100% fun. Will definitely book again! 🌊'},
+              {name:'Bhismak & Namrata Vasaikar',loc:'Kashmir 6N/7D',platform:'Google',text:'Kashmir was a dream come true! The Travel\'s Guru curated a perfect itinerary covering Dal Lake, Gulmarg, Pahalgam and Sonamarg. Every hotel was handpicked and Mahavir sir was available on WhatsApp throughout our trip whenever we needed help. Highly recommended! ❄️'},
+              {name:'Priya Patel',loc:'Maldives Trip',platform:'Instagram',text:'If you want a premium luxury experience without the headache of planning, this is the agency. The Maldives overwater villa they booked for us was a dream come true! 🌊💙 @TheTravelsGuru'},
+            ].map((r,i)=>(
+              <div key={i} className="bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300">
+                <div className="text-brand-orange text-5xl font-serif leading-none">"</div>
+                <p className="text-slate-200 text-sm sm:text-base leading-relaxed flex-1">{r.text}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange font-black text-lg">{r.name[0]}</div>
+                    <div><p className="text-white text-sm font-bold">{r.name}</p><p className="text-slate-500 text-xs">{r.loc}</p></div>
                   </div>
-                  <div className="shrink-0">
-                    {review.platform === 'Instagram'
-                      ? <span className="font-extrabold italic text-xs text-pink-500 bg-pink-50 px-2 py-1 rounded">IG</span>
-                      : <span className="font-extrabold text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">FB</span>}
-                  </div>
+                  <span className={`text-[10px] font-black px-2 py-1 rounded-lg ${r.platform==='Google'?'bg-blue-500/20 text-blue-300':'bg-pink-500/20 text-pink-300'}`}>{r.platform}</span>
                 </div>
-                <p className="text-slate-700 text-sm leading-relaxed mb-6 font-medium">"{review.text}"</p>
-                <div className="flex items-center gap-6 pt-4 border-t border-slate-100 text-slate-400">
-                  <button className="flex items-center gap-1.5 hover:text-red-500 transition-colors group/btn">
-                    <Heart size={18} className="group-hover/btn:fill-red-500" />
-                    <span className="text-xs font-bold">{review.likes}</span>
-                  </button>
-                  <button className="flex items-center gap-1.5 hover:text-blue-500 transition-colors">
-                    <Headphones size={18} /> <span className="text-xs font-bold">Reply</span>
-                  </button>
-                </div>
-              </motion.div>
+                <div className="flex gap-0.5">{[...Array(5)].map((_,j)=><span key={j} className="text-yellow-400 text-xs">★</span>)}</div>
+              </div>
             ))}
           </div>
         </div>

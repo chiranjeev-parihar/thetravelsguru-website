@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Users, MapPin, Target, ShieldCheck, Heart, Clock, Phone, Zap, Lock, Code } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -21,15 +21,16 @@ const staggerContainer = {
 };
 
 export const About = () => {
-  const handleGetDirections = () => {
-    // Correctly opens the maps URL
-    window.open(DEFAULTS.MAPS_URL, '_blank');
-  };
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <div className="pb-24 bg-slate-50 min-h-screen">
+    <div className="bg-slate-50 min-h-screen overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section className="bg-slate-900 text-white py-32 px-4 relative overflow-hidden">
+      <section className="bg-slate-900 text-white w-full max-w-7xl mx-auto px-4 sm:px-6 py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-40 mix-blend-overlay">
           <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="About Hero" />
         </div>
@@ -39,7 +40,7 @@ export const About = () => {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="max-w-7xl mx-auto relative z-10 space-y-6 text-center md:text-left pt-12"
+          className="relative z-10 space-y-6 text-center md:text-left pt-12"
         >
           <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/20 mb-4 text-white">
             Discover Our Legacy
@@ -57,9 +58,9 @@ export const About = () => {
       <motion.section
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         variants={staggerContainer}
-        className="max-w-7xl mx-auto px-4 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+        className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
       >
         <motion.div variants={fadeInUp} className="space-y-8">
           <div className="space-y-4">
@@ -87,7 +88,7 @@ export const About = () => {
 
         <motion.div variants={fadeInUp} className="relative group perspective-[1000px]">
           <div className="transform-gpu preserve-3d transition-transform duration-700 group-hover:rotate-y-12 group-hover:rotate-x-6">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80" className="rounded-[40px] shadow-2xl" alt="Team" />
+            <img src="/owner.png" className="rounded-[40px] shadow-2xl" alt="Team" />
           </div>
           <div className="absolute -bottom-10 -left-10 lg:-left-20 bg-white/90 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl border border-white hidden md:block max-w-sm animate-float group-hover:scale-105 transition-transform duration-500 z-10">
             <h4 className="font-black text-slate-900 mb-3 italic text-xl">"Your trust is our greatest asset."</h4>
@@ -100,14 +101,14 @@ export const About = () => {
       <motion.section
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         variants={fadeInUp}
-        className="py-12 md:py-24"
+        className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24"
       >
-        <div className="max-w-7xl mx-auto px-4 space-y-20">
+        <div className="space-y-20">
           {/* Founder Card */}
           <div className="bg-white rounded-[48px] p-8 md:p-16 lg:p-20 shadow-2xl border border-slate-100 flex flex-col lg:flex-row gap-12 lg:gap-16 items-center relative overflow-visible">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 z-0"></div>
+            <div className="absolute top-0 right-0 w-full h-full bg-brand-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 z-0"></div>
 
             <div className="w-full lg:w-5/12 shrink-0 relative z-20">
               <div className="relative group mx-auto max-w-sm lg:max-w-none">
@@ -130,7 +131,7 @@ export const About = () => {
               <h2 className="text-4xl md:text-5xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">Visionary Behind <br /><span className="text-[#1f3bb3]">Your Dream Journey</span></h2>
               <div className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-100 border-l-4 border-l-brand-orange relative z-10">
                 <p className="text-slate-500 leading-relaxed text-lg md:text-xl italic font-medium">
-                  "I started TheTravelGuru because I saw a gap in the market — people wanted expert advice without the hidden fees and corporate bureaucracy. My commitment is to provide you with a travel experience that I would personally take my own family on."
+                  "I started The Travel's Guru because I saw a gap in the market — people wanted expert advice without the hidden fees and corporate bureaucracy. My commitment is to provide you with a travel experience that I would personally take my own family on."
                 </p>
               </div>
               <div className="space-y-5 pt-2">
@@ -152,16 +153,16 @@ export const About = () => {
 
           {/* CTO Card */}
           <div className="bg-white rounded-[48px] p-8 md:p-16 lg:p-20 shadow-2xl border border-slate-100 flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center relative overflow-visible">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/3 z-0"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-brand-orange/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/3 z-0"></div>
 
             <div className="w-full lg:w-5/12 shrink-0 relative z-20">
               <div className="relative group mx-auto max-w-sm lg:max-w-none">
                 <img
                   src="/Chiranjeev.png"
-                  className="w-full aspect-square md:aspect-[4/5] lg:h-[500px] object-cover rounded-[40px] shadow-2xl transition-transform duration-700 group-hover:scale-105 bg-slate-100"
+                  className="w-full aspect-square md:aspect-[4/5] lg:h-[500px] object-cover object-top rounded-[40px] shadow-2xl transition-transform duration-700 group-hover:scale-105 bg-slate-100"
                   alt="Chiranjeev Parihar"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80';
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80';
                   }}
                 />
                 <div className="absolute -bottom-6 right-4 md:right-8 bg-[#1f3bb3] text-white py-4 px-6 md:p-6 rounded-[20px] md:rounded-3xl shadow-2xl border border-white/20 z-30 transition-transform duration-500 group-hover:-translate-y-2">
@@ -197,52 +198,7 @@ export const About = () => {
         </div>
       </motion.section>
 
-      {/* 4. Office Location */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={fadeInUp}
-        className="max-w-7xl mx-auto px-4 py-16 space-y-12"
-      >
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Visit Our <span className="text-brand-blue">Office</span></h2>
-          <p className="text-slate-500 text-lg">Come over for a cup of coffee and let's plan your next adventure.</p>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 rounded-[40px] overflow-hidden h-[450px] shadow-2xl border border-slate-100 group relative">
-            <div className="absolute inset-0 border-4 border-transparent group-hover:border-brand-blue/20 transition-colors z-10 pointer-events-none rounded-[40px]"></div>
-            <iframe
-              src="https://maps.google.com/maps?q=236%202nd%20Floor%20Happy%20Hallmark%20Shopper%20Vesu%20Surat,%20Surat,%20Gujarat,%20394210&t=&z=14&ie=UTF8&iwloc=&output=embed"
-              className="w-full h-full border-0 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-              loading="lazy"
-              title="Office Location"
-            ></iframe>
-          </div>
-          <div className="bg-white p-10 rounded-[40px] shadow-2xl border border-slate-100 space-y-8 flex flex-col justify-center">
-            <div className="space-y-2">
-              <h4 className="text-[10px] font-black uppercase text-brand-blue tracking-widest flex items-center gap-2"><MapPin size={14} /> Address</h4>
-              <p className="text-lg font-bold text-slate-800 leading-snug">{DEFAULTS.ADDRESS}</p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-[10px] font-black uppercase text-brand-blue tracking-widest flex items-center gap-2"><Clock size={14} className="lucide lucide-clock" /> Business Hours</h4>
-              <p className="text-lg font-bold text-slate-800">Mon - Sat: 9:00 AM - 8:00 PM</p>
-              <p className="text-slate-500 text-sm font-medium">Sunday: Appointment Only</p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-[10px] font-black uppercase text-brand-blue tracking-widest flex items-center gap-2"><Phone size={14} className="lucide lucide-phone" /> Contact</h4>
-              <p className="text-lg font-bold text-slate-800">{DEFAULTS.PHONE}</p>
-              <p className="text-slate-500 text-sm font-medium">{DEFAULTS.EMAIL}</p>
-            </div>
-            <button
-              onClick={handleGetDirections}
-              className="mt-auto block w-full btn-primary text-center"
-            >
-              Get Directions
-            </button>
-          </div>
-        </div>
-      </motion.section>
+      {/* 4. Office Location Removed */}
     </div>
   );
 };

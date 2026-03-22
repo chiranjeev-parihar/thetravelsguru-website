@@ -2,7 +2,7 @@
 import { Package, Testimonial, Destination } from './types';
 
 export const DEFAULTS = {
-  COMPANY_NAME: 'TheTravelGuru',
+  COMPANY_NAME: 'The Travel\'s Guru',
   OWNER: 'Mahavir Mahirrao',
   PHONE: '9099965751',
   EMAIL: 'thetravelsguru@gmail.com',

@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail, MapPin, Instagram, Facebook, Send } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, Instagram, Facebook, Send, Lock, Youtube, ChevronDown, Users, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DEFAULTS } from '../data';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLoginMenu, setShowLoginMenu] = useState(false);
   const location = useLocation();
+
+  useEffect(()=>{
+    const fn=(e:MouseEvent)=>{if(!(e.target as Element).closest('.login-dropdown')) setShowLoginMenu(false);};
+    document.addEventListener('mousedown',fn);
+    return()=>document.removeEventListener('mousedown',fn);
+  },[]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -53,13 +60,20 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden md:block">
-            <Link
-              to="/contact"
-              className="btn-primary"
+          <div className="relative hidden md:block login-dropdown">
+            <button
+              onClick={()=>setShowLoginMenu(!showLoginMenu)}
+              className="btn-primary flex items-center gap-2"
             >
-              Plan My Trip
-            </Link>
+              Login <ChevronDown size={16}/>
+            </button>
+            {showLoginMenu && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50">
+                <Link to="/admin" onClick={()=>setShowLoginMenu(false)} className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 border-b border-slate-100"><Lock size={14}/> Admin Login</Link>
+                <Link to="/employee" onClick={()=>setShowLoginMenu(false)} className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 border-b border-slate-100"><Users size={14}/> Employee Login</Link>
+                <Link to="/customer" onClick={()=>setShowLoginMenu(false)} className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"><User size={14}/> Customer Login</Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -90,13 +104,11 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            <Link
-              to="/contact"
-              onClick={() => setIsOpen(false)}
-              className="w-full block text-center btn-primary"
-            >
-              Plan My Trip
-            </Link>
+            <div className="space-y-2 pt-2">
+              <Link to="/admin" onClick={()=>setIsOpen(false)} className="flex items-center gap-2 w-full bg-slate-800 text-white py-3 px-4 rounded-xl font-bold text-sm"><Lock size={14}/> Admin Login</Link>
+              <Link to="/employee" onClick={()=>setIsOpen(false)} className="flex items-center gap-2 w-full bg-slate-600 text-white py-3 px-4 rounded-xl font-bold text-sm"><Users size={14}/> Employee Login</Link>
+              <Link to="/customer" onClick={()=>setIsOpen(false)} className="flex items-center gap-2 w-full bg-brand-blue text-white py-3 px-4 rounded-xl font-bold text-sm"><User size={14}/> Customer Login</Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -120,35 +132,34 @@ const Footer = () => {
                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
               }}
             />
-            <h3 className="text-xl font-bold text-white mt-2">TheTravelGuru</h3>
+            <h3 className="text-xl font-bold text-white mt-2">The Travel's Guru</h3>
           </Link>
-          <p className="text-slate-400 text-sm leading-relaxed">
-            Founded by {DEFAULTS.OWNER}, we bring local expertise and transparent pricing to your dream vacations. Your journey, our priority.
-          </p>
+          <p className="text-slate-400 text-sm">🏢 Main: Happy Hallmark Shopper, Vesu, Surat<br/>🏢 Sub: Taloda, Nandurbar, Maharashtra</p>
           <div className="flex space-x-4 pt-2">
-            <Facebook className="text-slate-400 hover:text-blue-500 cursor-pointer transition-colors" size={20} />
-            <Instagram className="text-slate-400 hover:text-pink-500 cursor-pointer transition-colors" size={20} />
-            <Send className="text-slate-400 hover:text-blue-400 cursor-pointer transition-colors" size={20} />
+            <a href="https://www.facebook.com/profile.php?id=100072345653999" target="_blank" rel="noreferrer"><Facebook className="text-slate-400 hover:text-blue-500 cursor-pointer transition-colors" size={20}/></a>
+            <a href="https://www.instagram.com/the_travels_guru/?hl=en" target="_blank" rel="noreferrer"><Instagram className="text-slate-400 hover:text-pink-500 cursor-pointer transition-colors" size={20}/></a>
+            <a href="https://t.me/thetravelsguru" target="_blank" rel="noreferrer"><Send className="text-slate-400 hover:text-blue-400 cursor-pointer transition-colors" size={20}/></a>
+            <a href="https://www.youtube.com/@thetravelsguru" target="_blank" rel="noreferrer"><Youtube className="text-slate-400 hover:text-red-500 cursor-pointer transition-colors" size={20}/></a>
           </div>
         </div>
 
         <div>
           <h4 className="font-bold mb-6">Quick Links</h4>
           <ul className="space-y-3 text-slate-400 text-sm">
-            <li><Link to="/packages" className="hover:text-white">Explore Packages</Link></li>
-            <li><Link to="/about" className="hover:text-white">Our Story</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Custom Trip Plan</Link></li>
+            <li><Link to="/packages" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Explore Packages</Link></li>
+            <li><Link to="/about" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Our Story</Link></li>
+            <li><Link to="/contact" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Contact Us</Link></li>
+            <li><Link to="/contact" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Custom Trip Plan</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="font-bold mb-6">Support</h4>
           <ul className="space-y-3 text-slate-400 text-sm">
-            <li><Link to="/contact" className="hover:text-white">Cancellation Policy</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Privacy Policy</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Travel Insurance</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Terms of Service</Link></li>
+            <li><Link to="/cancellation-policy" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Cancellation Policy</Link></li>
+            <li><Link to="/privacy-policy" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Privacy Policy</Link></li>
+            <li><Link to="/travel-insurance" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Travel Insurance</Link></li>
+            <li><Link to="/terms" onClick={()=>window.scrollTo(0,0)} className="hover:text-white">Terms of Service</Link></li>
           </ul>
         </div>
 
@@ -167,11 +178,14 @@ const Footer = () => {
               <Mail className="text-orange-500 shrink-0" size={18} />
               <a href={`mailto:${DEFAULTS.EMAIL}`}>{DEFAULTS.EMAIL}</a>
             </li>
+            <li className="mt-3 rounded-xl overflow-hidden border border-slate-700" style={{height:'130px'}}>
+              <iframe src="https://maps.google.com/maps?q=Happy+Hallmark+Shopper+Vesu+Surat&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style={{border:0}} loading="lazy" title="Office"/>
+            </li>
           </ul>
         </div>
       </div>
       <div className="mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-xs">
-        <p>&copy; {new Date().getFullYear()} TheTravelGuru. All Rights Reserved. Designed for Trust & Excellence.</p>
+        <p>&copy; {new Date().getFullYear()} The Travel's Guru. All Rights Reserved. Designed for Trust & Excellence.</p>
       </div>
     </footer>
   );
@@ -186,7 +200,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       {/* Floating WhatsApp Widget */}
       <a
-        href={`https://wa.me/${DEFAULTS.WHATSAPP.replace(/\s+/g, '')}?text=Hi! I am interested in planning a trip with TheTravelGuru.`}
+        href={`https://wa.me/${DEFAULTS.WHATSAPP.replace(/\s+/g, '')}?text=Hi! I am interested in planning a trip with The Travel's Guru.`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 group"
